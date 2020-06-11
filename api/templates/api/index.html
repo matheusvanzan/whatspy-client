@@ -1,0 +1,85 @@
+<html>
+	
+	<head></head>
+	
+	
+	<body>
+		
+		
+		Enviar mensagem
+		<br><br>
+		
+		Contatos: 
+		<select id="to2">
+			{% for contact in contacts %}
+				<option value="{{ contact }}">{{ contact }}</option>
+			{% endfor %}
+		</select>
+		<br><br>
+		
+		Chats: 
+		<select id="to">
+			{% for chat in chats %}
+				<option value="{{ chat }}">{{ chat }}</option>
+			{% endfor %}
+		</select>
+		<br><br>
+		
+		Mensagem: <input id="message" type="text" value="" />
+		<br><br>
+		
+		<button onclick="send_message()">Enviar</button>
+		<button onclick="refresh_img()">Reaload</button>
+		<br><br>
+		
+		<img id="screenshot-img"
+			 src=""
+			 width="960"
+			 height="540"
+			 alt="Carregando imagem..."
+		/>
+		
+		<script>
+			
+			
+			function refresh_img() {
+				console.log('reloading...');
+			    var img = document.getElementById('screenshot-img');
+			    // var src = img.src;
+			    img.src = "";
+			    img.src = "/screenshot/";
+			    console.log('done!');
+			}
+			
+			function send_message() {
+				var loading_gif = "https://media1.tenor.com/images/92bc26f5faa7a84921bda36d46e3a8fe/tenor.gif";
+				
+				var img = document.getElementById('screenshot-img');
+				img.src = "";
+				// img.src = loading_gif;
+				
+				var to = document.getElementById("to").value;
+				var message = document.getElementById("message").value;
+				
+				var url = "/send/?to=" + to + "&message=" + message;
+				var xmlHttp = new XMLHttpRequest();
+				
+				xmlHttp.onreadystatechange = function() { 
+				if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+					console.log(xmlHttp.responseText);
+					
+					var img = document.getElementById('screenshot-img');
+					// img.src = "";
+					img.src = "/screenshot/";
+					}
+					xmlHttp.open("GET", url, true); // true for asynchronous 
+					xmlHttp.send(null);
+				}
+			
+			// load img
+			refresh_img();
+		</script>
+		
+	</body>
+	
+</html>
